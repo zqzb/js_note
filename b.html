@@ -1,0 +1,210 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>arguments</title>
+<style type="text/css">
+.box{
+	display:flex;width:800px;height: 600px;outline: 1px solid;flex-direction: column;flex-wrap: wrap;
+	justify-content: space-between;align-items: baseline;align-content: space-around;
+}
+.box2{display: flex;flex-direction: row;height:600px;outline:1px solid;margin-top:20px;flex-wrap: wrap;justify-content: space-around;align-items: baseline;align-content: flex-end;}
+.a,.b,.c,.d{width: 100px;height: 100px;outline: 1px solid;}
+.b,.d{height: 200px;padding-top: 20px;}
+.a{order: 3;flex-grow: 3;}
+.b{order: 10;flex-shrink: 2;}
+.c{flex-grow: 10}
+.d{flex-shrink: 20}
+</style>
+</head>
+	<body>
+		<div class="box">
+			<div class="a">aaaaa</div>
+			<div class="b">bbbbb</div>
+			<div class="a">aaaaa</div>
+			<div class="b">bbbbb</div>
+			<div class="a">aaaaa</div>
+			<div class="b">bbbbb</div>
+			<div class="a">aaaaa</div>
+			<div class="b">bbbbb</div>
+			<div class="a">aaaaa</div>
+			<div class="b">bbbbb</div>
+			<div class="a">aaaaa</div>
+			<div class="b">bbbbb</div>
+			<div class="a">aaaaa</div>
+			<div class="b">bbbbb</div>
+		</div>
+		<div class="box2">
+			<div class="c">1aaaaaa</div>
+			<div class="d">2sssssss</div>
+			<div class="c">3sssssssss</div>
+			<div class="d">4ssssssss</div>
+			<div class="c">5sssssssssddddd</div>
+			<div class="d">6ssssss</div>
+			<div class="c">7ssssss</div>
+			<div class="d">8ssssss</div>
+			<div class="c">9ssssss</div>
+			<div class="d">10ssss</div>
+			<div class="c">11ssss</div>
+			<div class="d">12sssss</div>
+			<div class="c">13ssss</div>
+			<div class="d">14sssss</div>
+			<div class="c">15ssssss</div>
+			<div class="d">16ssssss</div>
+			<div class="c">17sssss</div>
+			<div class="d">18ssss</div>
+			<div class="c">19sssss</div>
+			<div class="d">20sss</div>
+			<div class="c">21ssss</div>
+			<div class="d">22ssss</div>
+
+		</div>
+	</body>
+	<script type="text/javascript">
+		function announce(){
+			var len=arguments.length;
+			console.log(arguments[1])
+			var result="获得本次大会第一名的共有"+len+"人，分别是"
+			if(len){
+				for(var i=0;i<len;i++){
+					if(i!=0){
+						result+='、'
+					}
+					console.log("没加"+result)
+					result+=arguments[i]
+					console.log(result)
+				}			
+			}
+			result+='。'
+			return result
+		}
+		var resultStr=announce('Tom','Jack','Mike')
+		// console.log(resultStr)
+		window.name="jero"
+		var o={
+			name:'Tom'
+		}
+		function sayName(){
+			console.log(this.name)
+		}
+		sayName()
+		o.sayName=sayName;
+		o.sayName()
+
+		var price=10;
+		var apple={
+			price:8,
+			getPrice:function(){
+				return this.price;
+			}
+		}
+		var getPrice=function(){
+			return price;
+		}
+		var result1=getPrice();   //10
+		var getPrice=apple.getPrice;
+		var result2=getPrice();  //10
+		var result3=apple.getPrice();  //8
+		console.log(result1,result2,result3)
+
+        // 闭包练习
+		function createPerson(name){
+			var newname=name;
+			return {
+				getName:function(){
+					return newname;
+				}
+			}		
+		}
+		var person=createPerson('Tom')
+		console.log(person.newname)  //undefined  外面不能访问函数私有变量
+		console.log(person.getName())  //Tom    通过闭包的形式进行访问
+
+		function Person(name,age,sex){     //构造函数
+			this.name=name
+			this.age=age
+			this.sex=sex	
+			this.sayHello=function(){
+				console.log(this.name)
+			}		
+		}
+
+		var person=new Person('Tom','22','man')
+		console.log(person instanceof Person)  //true
+		console.log(person.name,person.age,person.sex)  //Tom 22 unknown
+		person.sayHello()
+		console.log(Person())  //undefined
+		// 构造函数的不足之处：重复声明相同的函数，浪费内存
+
+		Person.prototype.name='Jonny'
+		Person.prototype.friends=['Cover','Kevin']
+		Person.prototype.sayHello=function(){
+			console.log("ewewr")
+		}
+		var person1=new Person('Sugar')
+		var person2=new Person('Cream')
+		console.log(person1.friends)
+		console.log(person2.friends)
+		console.log(person1.sayHello===person2.sayHello)
+        
+        function Bottle(){}
+		Bottle.prototype.name='保温杯'
+		Bottle.prototype.price='199'
+		Bottle.prototype.sayHello=function(){
+			console.log('hello')
+		}
+		var bottle1=new Bottle();
+		console.log(bottle1)
+
+		// 原型是函数的一个属性，是一个对象
+		// 如果函数作为构造函数使用，那么该构造函数的所有实例都共享这个原型对象。
+
+		var price=5;
+		var priceCopy=price
+		priceCopy=10
+		console.log(price,priceCopy)
+
+		var color=['红','黄']
+		var colorCopy=color
+		colorCopy.push('绿')
+		console.log(color,colorCopy)
+
+		// 构造函数结合原型创造对象
+		// 属性的覆盖，属性的判断（in 操作符，hasOwnProperty)
+		function Bottle(name,price,isKeepWarm){
+			// this.name=name;
+			this.price=price;
+			this.isKeepWarm=isKeepWarm;
+		}
+
+		Bottle.prototype.name='aaa'
+		Bottle.prototype.sayName=function(){
+			console.log(this.name)
+		}
+
+		var bottle1=new Bottle('保温杯','999',true)
+		console.log(bottle1.name)  //  保温杯   构造函数里的变量会覆盖原型里声明的变量
+		console.log('name' in bottle1)  //只要含有这个name属性就为true
+		console.log(bottle1.hasOwnProperty('name'))   //判断属性是否在实例中，而不是在原型中
+
+
+		function Animal(name,brothers){
+			this.name=name
+			this.brothers=brothers
+		}
+
+		Animal.prototype.food=function(){
+			console.log('2222')
+		}
+
+		var anima1=new Animal('Sugar',['milk','fruits'])
+		var anima2=new Animal('Tom',['aaa','bbb'])
+		console.log(anima1.name)
+		console.log(anima1.brothers)
+		console.log(anima2.name)
+		console.log(anima2.brothers)
+		console.log(anima1.food === anima2.food)
+
+	</script>
+
+</html>

@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<title>arguments</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		function announce(){
+			var len=arguments.length;
+			console.log(arguments[1])
+			var result="获得本次大会第一名的共有"+len+"人，分别是"
+			if(len){
+				for(var i=0;i<len;i++){
+					if(i!=0){
+						result+='、'
+					}
+					console.log("没加"+result)
+					result+=arguments[i]
+					console.log(result)
+				}			
+			}
+			result+='。'
+			return result
+		}
+		var resultStr=announce('Tom','Jack','Mike')
+		// console.log(resultStr)
+		window.name="jero"
+		var o={
+			name:'Tom'
+		}
+		function sayName(){
+			console.log(this.name)
+		}
+		sayName()
+		o.sayName=sayName;
+		o.sayName()
+
+		/*var price=10;
+		var apple={
+			price:8,
+			getPrice:function(){
+				return this.price;
+			}
+		}
+		var getPrice=function(){
+			return price;
+		}
+		var result1=getPrice();   //10
+		var getPrice=apple.getPrice;
+		var result2=getPrice();  //10
+		var result3=apple.getPrice();  //8
+		console.log(result1,result2,result3)*/
+
+		var price=1;
+		var apple={
+			price:8,
+			getPrice:function(){
+				return this.price;
+			}
+		}
+
+		var orange={
+			price:10,
+			getPrice:function(){
+				return this.price*2
+			}
+		}
+
+		var result1=orange.getPrice(); //20
+		var result2=apple.getPrice.apply(orange,[1,2])  //10
+		var result3=orange.getPrice.call(this,1,2)   //2
+		orange.getPrice=orange.getPrice.bind(apple)  //
+		result4=orange.getPrice();  //16
+
+		function demo(arg1,arg2){
+			console.log(demo.name)  //'demo'
+			console.log(demo.length)  //2
+			console.log(arguments.length) //4
+		}
+
+		demo('a','b','c','d')
+
+		//函数在Js中被说成是first class的原因是：函数可以作为函数的参数和返回结果，并且可以赋值给变量
+		//闭包是指有权访问另一个函数作用域中的变量的函数。
+
+	</script>
+
+</html>
