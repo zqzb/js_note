@@ -5,9 +5,126 @@
 	<title>arguments</title>
 </head>
 <body>
-	
-</body>
+
 <script type="text/javascript">
-	
+//1.实现原型链继承
+function Person(){
+	this.isPerson=true
+}
+Person.prototype.sayHello=function(){
+	console.log('Hello!')
+}
+
+function Student(grade){
+	this.grade=grade	
+}
+Student.prototype=new Person()
+
+Student.prototype.sayGrade=function(){         //这串代码必须在上面的后写，否则会被上面的覆盖
+	console.log('I am Grade '+this.grade)
+}
+var student = new Student(4)
+console.log(student.isPerson)
+student.sayHello();
+console.log(student.grade)
+student.sayGrade()
+console.log(student instanceof Student)  //true
+console.log(student instanceof Person)   //true
+
+//原型链继承的不足：1.constructor指向问题（需要在父类手动添加父类的constructor指向子类）；
+//2.属性共享问题（如数组那种引用类型数据改变时，会造成数据污染）
+//3.参数
+
+//2.借用构造函数继承
+function Plane(color){
+	this.color=color;
+	this.sayHello=function(){}
+}
+Plane.prototype.fly=function(){   //原型上的函数依然继承不到
+	console.log('flying')
+}
+
+function Fighter(color){
+	Plane.call(this,color)  //将Plane的作用域指到Fighter,也就是Fighter继承到父类的参数，解决了上述参数的问题
+	this.buttets=[]
+}
+Fighter.prototype.shoot=function(){
+	console.log('a b c')
+}
+
+var f=new Fighter('blue')
+console.log(f)
+
+function People(name){
+	this.name=name;
+}
+People.prototype.sayHello=function(){
+	console.log('Hi,I am '+this.name)
+}
+
+function xuesheng(name,grade){
+	People.call(this,name)  //这一句把 People 当成正常的函数来使用，通过这样来继承 People 的实例属性，但是这样的缺点就是没有继承 People 的原型方法和属性，因此，instanceof People 的结果是 false, 因为实例中找不到 People 的原型。
+	this.grade=grade
+}
+xuesheng.prototype.selfIntroduce=function(){
+	console.log('My name is '+this.name+'. I am Grade '+this.grade)
+}
+var xs=new xuesheng('Jhon',6)
+console.log(xs.name)
+console.log(xs.grade)
+xs.selfIntroduce()
+console.log(xs instanceof People)  //false   因此，instanceof People 的结果是 false, 因为实例中找不到 People 的原型。
+console.log(xs instanceof xuesheng)  //true
+
+
+//3.组合继承
+function Animal(name){
+	this.name=name
+}
+Animal.prototype.sayHello=function(){
+	console.log('My name is '+this.name)
+}
+
+function Cat(name,color){
+	Animal.call(this,name)  //借用构造函数在实例中继承属性
+	this.color=color
+}
+Cat.prototype=new Animal()      //继承原型属性和方法  通过原型链的方式继承
+Cat.prototype.constructor=Cat
+Cat.prototype.sayColor=function(){
+	console.log('I am '+this.color)
+}
+var cat=new Cat('小猫','black')
+console.log(cat.name)
+console.log(cat.color)
+console.log(cat.constructor)
+console.log(cat instanceof Animal)  //true
+console.log(cat instanceof Cat)   //true
+
+//4.最佳实践  基于组合继承，不必重复调用父类的构造函数，只需继承原型
+//父类构造函数
+function Parent(color){
+	this.color=color;
+}
+Parent.prototype.work=function(){
+	console.log("坐公交上班")
+}
+//子类构造函数
+function Child(name){
+	Parent.call(this,color)
+	thsi.name=name;
+}
 </script>
-</html>
+</body>
+
+</html> 
+
+
+
+
+
+
+
+
+
+
