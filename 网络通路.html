@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>网络通路</title>
+</head>
+<body>
+	<div>
+		<h3>1.从输入地址到返回请求</h3>
+		<div style="text-indent: 2rem">ke.qq.com --> IP地址（通过DNS查找）-->打包（HTTP协议）--> 逻辑网络（TCP/IP）--> 物理网络 --> 逻辑网络（TCP/IP）--> 拆包 --> JAVA,Nodejs(前端为CSS/JS) --> DB</div>
+		<h3>2.网络体系结构</h3>
+		<div>
+			<p>TCP/IP四层协议</p>
+			<p>应用层 --> DNS,HTTP,SMTP.POP3,IMAP</p>
+			<p>运输层 --> TCP,IP</p>
+			<p>网络层 --> IP</p>
+			<p>网络接口层</p>
+			<div style="font-weight: bold;">OSI的七层协议：物理层，数据链路层，网络层，运输层，会话层，表示层，应用层</div>
+		</div>
+		<h3>3.分组</h3>
+		<div style="text-indent: 2rem">数据会被分割成很多小块在网络上传输；分组都是乱序随机传输，目标机器给予排序；上一层次的分组会被封装进当前层次的数据部分</div>
+		<h3>4.TCP</h3>
+		<div><image width="600" src="images/tcp.png"></div>
+		<h3>5.HTTP</h3>
+		<div>
+			<div>请求报文结构<image style="vertical-align: middle;" width="600" src="images/qingqiu.png"></div>
+			<div>响应报文结构<image style="vertical-align: middle;" width="600" src="images/xiangying.png"></div>
+		</div>
+		<h3>6.状态码</h3>
+		<div>
+			<p>200	请求成功。一般用于GET与POST请求</p>
+			<p>301	永久移动。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替</p>
+			<p>302	临时移动。与301类似。但资源只是临时被移动。客户端应继续使用原有URI</p>
+			<a href="http://www.runoob.com/http/http-status-codes.html" target="_blank">更多状态码</a>
+		</div>
+		<h3>7.浏览器缓存</h3>
+		<div>
+			<p>expires:浏览器缓存失效时间，绝对时间 格林尼治时间</p>
+			<p>cache-control:max-age=20 相对时间，浏览器第一次访问某个资源，在20秒之内都可以缓存 20秒之后就不缓存 优先级比expires高</p>
+			<p>last-modified:文件最后修改的时间（格林尼治时间）浏览器会将这个时间缓存下来</p>
+			<p>if-modified-since:如果最后修改的时间变了，就会把这个新时间发送给服务器</p>
+			<p>Etag:判断文件内容是否改动</p>
+			<p>if-None-Match:文件内容改动的话就将时间发送到服务器</p>
+		</div>
+		<h3>8.DNS</h3>
+		<div>
+			<p>在地址栏输入域名的时候，先通过DNS系统找到IP地址</p>
+			<p><image width="300" src="images/dns.png"></p>
+			<p><image width="500" src="images/yuming.png"></p>
+			<p><image width="400" src="images/fwq.png"></p>
+		</div>
+		<h3>9.总结</h3>
+		<p><image width="600" src="images/wangluo.png"></p>
+		<p><image width="700" src="images/huancun.png"></p>
+	</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>canvas进阶</title>
+</head>
+<body>
+	<canvas id="canvas" width="500" height="100" style="background: #ccc"></canvas>
+	<canvas id="canvas2" width="500" height="500" style="display: block;background: #eee;margin-top:50px;"></canvas>
+	<script type="text/javascript">
+		var canvas=document.getElementById("canvas")
+		var context=canvas.getContext('2d')
+		var image = new Image()
+		var master={
+			x:30,
+			y:30,
+			size:60
+		}
+		image.src='images/132.jpg'
+		image.onload=function(){
+			context.drawImage(image,master.x,master.y,master.size,master.size)
+			animate();
+		}
+		function animate(){
+			if(master.x>400){
+				return
+			}
+			master.x+=5
+			context.clearRect(0,0,canvas.width,canvas.height)
+			context.drawImage(image,master.x,master.y,master.size,master.size)
+			requestAnimationFrame(animate)
+		}
+
+		var canvas2=document.getElementById("canvas2")
+		var context2=canvas2.getContext("2d")
+		var rect={
+			x:100,
+			y:100,
+			width:100,
+			height:100,
+			step:30
+		}
+		document.onkeydown = function(e){
+			var key=e.keyCode || e.which || e.charCode
+			switch(key){
+				case 37:
+					rect.x-=20
+					drawRect()
+					break;
+				case 38:
+					rect.y-=20
+					drawRect()
+					break;
+				case 39:
+					rect.x+=20
+					drawRect()
+					break;
+				case 40:
+					rect.y+=20
+					drawRect()
+					break;
+			}
+		}
+		function drawRect(){
+			context2.clearRect(0,0,canvas2.width,canvas2.height)
+			context2.fillRect(rect.x,rect.y,rect.width,rect.height)
+		}
+		drawRect()
+	</script>
+</body>
+</html>

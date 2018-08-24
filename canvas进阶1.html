@@ -1,0 +1,67 @@
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>canvas进阶</title>
+</head>
+<body>
+	<canvas id="canvas" width="300" height="210" style="background: #ddd"></canvas>
+	<canvas id="animate" width="500" height="400" style="display:block;background: #ddd;margin-top: 50px;"></canvas>
+	<script type="text/javascript">
+		var canvas=document.getElementById("canvas")
+		var context=canvas.getContext("2d")
+		var image=new Image();
+		image.src='images/132.jpg'
+		image.onload=function(){
+			context.drawImage(image,0,0,200,200)
+			// context.drawImage(image,100,100,100,100)
+			context.drawImage(image,0,0,66,66,66,66,50,50)
+		}
+		// 制作动画
+		var canvas2=document.getElementById("animate")
+		var context=canvas2.getContext("2d")
+		// 兼容定义requestAnimFrame
+		window.requestAnimFrame=window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback){
+			window.setTimeout(callback,1000/30)
+		}
+		// 绘制圆的对象
+		var circle={
+			x:250,
+			y:250,
+			radius:50,
+			direction:'right',
+			move:function(){
+				if(this.direction === 'right'){
+					if(this.x<=430){
+						this.x+=5;
+					}else{
+						this.direction='left'
+					}
+				}else{
+					if(this.x>=60){
+						this.x-=5
+					}else{
+						this.direction='right'
+					}
+				}
+			},
+			draw:function(){
+				context.beginPath()
+				context.arc(this.x,this.y,this.radius,0,2*Math.PI,false)
+				context.fillStyle='#0ff'
+				context.fill()
+			}
+		}
+		// 动画执行函数
+		function animate(){
+			circle.move()
+			context.clearRect(0,0,canvas2.width,canvas2.height)
+			circle.draw()
+			requestAnimationFrame(animate)
+		}
+
+		circle.draw()
+		animate()
+	</script>
+</body>
+</html>

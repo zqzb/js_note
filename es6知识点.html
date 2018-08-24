@@ -1,0 +1,67 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<title>es6知识点</title>
+</head>
+<body>
+	<div id="app">
+		<input type="text" v-model:value="childrens.name">
+		<input type="text" v-model:value="lastName">
+	</div>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:"#app",
+		data:{
+			childrens:{
+				name:'小琪',
+				age:20,
+				sex:'男'
+			},
+			tdArray:["1","2"],
+			lastName:"苏苏"
+		},
+		watch:{
+			childrens:{
+				handler:function(val,oldval){
+					console.log(val.name)
+				},
+				deep:true
+			},
+			'childrens.name':function(val,oldval){
+				console.log(val+"aaa")
+			},
+			lastName:function(val,oldval){
+				console.log(this.lastName)
+			}
+		},
+	});
+	vm.$watch("lastName",function(val,oldval){
+		console.log(val)
+	})
+
+
+	var a=['a','b','c']
+	var c="一出好戏"
+	var b='𠮷'
+	var d=[1,NaN]
+	for(item of a){
+		console.log(item)
+	}
+	console.log(c.charAt(1))   //根索引值查出字符，有据的查询不了可以用下列函数替代
+	console.log(b.codePointAt(1))  //
+	console.log(d.indexOf(NaN))    //-1
+	console.log(d.includes(NaN))  //true   判断是否存在NaN
+	console.log(b.repeat(2))      //将b重复2遍  其中n不能为-1和infinaty
+
+	var e='Hello World'
+	
+	console.log(e.startsWith('World',6))  //true
+	console.log(e.endsWith('Hello',5))    //true  从末尾开始数
+	var f='abc'
+	// console.log(a.padEnd(10,'-------'))
+</script>
+</body>
+</html>

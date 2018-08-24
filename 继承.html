@@ -2,9 +2,29 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="content-type" content="text/html;charset=utf-8">
-	<title>arguments</title>
+	<title>继承</title>
 </head>
 <body>
+<div style="width: 300px;height: 450px;outline: 1px solid;position: fixed;">
+
+	<div style="width:90%;height: 30px;outline: 1px solid #0ff;position: absolute;top:10px;left:10px;">fd</div>
+
+	<div style="width:90%;height: 150px;margin-top:50px;outline: 1px solid #0ff;overflow: auto;">
+		<div style="width: 90%;white-space: normal;">
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+		</div>
+		
+	</div>
+</div>
+
+
 
 <script type="text/javascript">
 //1.实现原型链继承
@@ -110,9 +130,73 @@ Parent.prototype.work=function(){
 	console.log("坐公交上班")
 }
 //子类构造函数
-function Child(name){
-	Parent.call(this,color)
-	thsi.name=name;
+function Child(name,color){
+	Parent.call(this,color);
+	this.name=name;
+}
+// inheritPrototype(Parent,Child);
+inheritPrototype(Child,Parent);
+Child.prototype.eat=function(){
+	console.log("我喜欢吃鱼肉")
+}
+function inheritPrototype(subType,superType){
+	//新建一个对象{}，将原型指向传入的参数，接着返回对象
+
+	// var protoType = Object.create(superType.prototype);
+	// protoType.constructor = subType;
+	// subType.prototype=protoType;
+
+	var temp = function(){}; //为什么是空函数
+	temp.prototype = superType.prototype;
+	subType.protoType = new temp();
+	subType.prototype.constructor = subType
+}
+
+var achild = new Child('小三','white');
+console.log(achild);
+
+//5.实现继承的最佳实践
+function Computer(name){
+	this.name=name;
+}
+Computer.prototype.work = function(){
+	console.log('My name is' + this.name);
+}
+
+function Dell(size,name){
+	Computer.call(this,name)
+	this.size = size;
+}
+inherit(Dell,Computer)
+Dell.prototype.service = function(){
+	console.log('my size is' + this.size)
+}
+function inherit(subType,superType){
+	var prototype = Object.create(superType.prototype)
+	prototype.constructor = subType
+	subType.prototype=prototype
+}
+var dell = new Dell('15.6','戴尔')
+console.log(dell)
+console.log(dell instanceof Computer)
+console.log(dell instanceof Dell)
+// ES6 的继承
+class A {
+	constructor(name){
+		this.name=name
+	}
+	syName(){
+		console.log(this.name)
+	}
+}
+class B extends A {
+	constructor(name,grade){
+		super(name)
+		this.grade=grade
+	}
+	sayGrade(){
+		console.log("I am Grade $(this.grade)")
+	}
 }
 </script>
 </body>

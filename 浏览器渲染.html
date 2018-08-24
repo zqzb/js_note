@@ -1,0 +1,67 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>网络通路</title>
+</head>
+<body>
+	<h3>1.渲染引擎</h3>
+	<div>
+		<p>谷歌 Blink，IE浏览器 Trident，Safari Webkit，火狐 Gecko，Opera Blink</p>
+	</div>
+	<h3>2.HTML和DOM树构建</h3>
+	<div>HTML --> 词法解析 --> 语法解析 --> DOM树</div>
+	<h3>3.渲染过程概述</h3>
+	<div>js文件放在头部会阻塞页面的渲染；页面渲染是边加载边解析边渲染</div>
+	<h3>4.DOM树和渲染树</h3>
+	<div>一般情况下，DOM树和渲染树一一对应，但是有几种特殊情况，渲染树没有(a.head元素没有；b.设置了display:none；c.定位的元素，会去其他地方渲染)</div>
+	<h3>5.重排和重绘</h3>
+	<div>
+		<p id="div" style="width: 150px;height: 100px;background: #0ff"></p>
+		<p><button id="size">大小</button><button id="color">颜色</button></p>
+		<p><image src="images/chongpai.png" width="600"></p>
+		<p><image src="images/chonghui.png" width="600"></p>
+		<p>下列操作会触发重排（一般涉及到几何属性）：修改元素位置；修改元素宽度；修改颜色内边距</p>
+		<p>注：有重排就一定有重绘，有重绘不一定有重排。 背景颜色，颜色等与几何属性无关的属性改变时，一般进行重绘，不进行重排</p>
+	</div>
+	<h3>6.从输入地址到页面渲染</h3>
+	<div><p><image src="images/fuxi.png" width="600"></p></div>
+	<h3>7.performance详解</h3>
+	<div>
+		<p style="line-height: 30px;">1)浏览器内存相关 performance.memory：可获取浏览器的内存情况，这个属性并不是标准的performance属性，只在chrome浏览器中。具体有以下的值：<br>&nbsp;&nbsp;&nbsp;&nbsp;usedJSHeapSize:表示所有被使用的Js堆栈内存<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;totalJSHeapSize:表示当前js堆栈内存总大小<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;jsHeapSizeLimie:表示内存大小限制<br>
+		其中，usedJSHeadSize不能大于totalJSHeapSize,如果大于则可能内存泄露的情况</p>
+		<p style="">2)网页导航相关 performance.navigation：此对象存储了两个属性，他们触发页面加载的原因。这些原因可能是页面重定向、前进后退或者普通的URL加载。两个属性如下：<br><image src="images/navigation.png" width="763"></p>
+		<p>3)时间相关 performance.timing：该对象包含了各种浏览器性能相关的信息如网站建立连接、DNS查询、DOM解析等各项数据，使我们能够更全面精确地了解网页性能的详细情况。<br><image src="images/timing.png" width="945"><image src="images/compute.png" width="520"><image src="images/compute2.png" width="520"></p>
+		<p>4)返回时间 performance.now()：该方法将会返回当前网页自从performance.timing.navigationStart到当前时间之间的微秒数（毫秒的千分之一），performance.now()返回的时间近似于Date.now(),但前者的时间精度是后者的1000倍。</p>
+		<p>5)资源加载相关 performance.getEntries() 浏览器获取网页时，会对网页中每一个资源文件（js、css、图片等）发出一个HTTP请求。performance.getEntries会统计这些请求并返回相应的时间信息。</p>
+	</div>
+	
+<script type="text/javascript">
+	//改变大小
+	var changesize=document.getElementById('size')
+	changesize.onclick=function(){
+		var div=document.getElementById("div")
+		var divWidth=parseInt(div.style.width)
+		if(divWidth==150){
+			div.style.width=300+'px'
+		}else if(divWidth==300){
+			div.style.width=150+'px'
+		}
+	}
+	//改变颜色
+	var changecolor=document.getElementById('color')
+	changecolor.onclick=function(){
+		var div=document.getElementById("div")
+		var divcolor=div.style.background
+		console.log(divcolor)
+		if(divcolor=='rgb(0, 255, 255)'){
+			div.style.background='rgb(255, 0, 255)'
+		}else if(divcolor=='rgb(255, 0, 255)'){
+			div.style.background='rgb(0, 255, 255)'
+		}
+	}
+</script>
+</body>
+</html>
