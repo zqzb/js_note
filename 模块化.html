@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>nodejs简介</title>
+<script type="text/javascript">
+	//不兼容performance.timing的浏览器，如IE8
+	window.pageStartTime = Date.now() //开始请求时间点
+</script>
+
+<!-- 页面CSS资源 -->
+<!-- <link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" type="text/css" href=""> -->
+
+<script type="text/javascript">
+	//白屏时间结束点
+	window.firstPaint = Date.now()
+</script>
+</head>
+<body>
+	<h3>1.命名空间</h3>
+	<div>javascript原生并不支持命名空间，只能通过模拟来实现；模块要有自己的命名空间，来避免变量冲突；使用对象创建命名空间能够减少全局变量污染一集提高代码可读性</div>
+	<h3>2.自执行函数实现模块</h3>
+	<div>
+		立即执行函数：(function(){})(); 或者 (function(){});
+	</div>
+	<h3>3.模块化</h3>
+	<div>
+		<p>1)模块化规范主要是为了解决命名冲突和模块间依赖管理的问题</p>
+		<p>2)目前通用的模块化规范有CommonJS、AMD、CMD等</p>
+		<p>3)模块化规范使开发人员能够以同样的方式来编写模块</p>
+		<p>4)模块化规范能够让JavaScript的模块化开发变得简单和自然</p>
+	</div>
+	<h3>4.构建的目的</h3>
+	<div>
+		<p>1)将一些操作配置化，自动化</p>
+		<p>2)既维护了开发体验，又保证了线上代码的性能</p>
+		<p>3)对项目进行打包，压缩等优化，提高性能</p>
+	</div>
+</body>
+
+<script type="text/javascript" src="require.js"></script>
+<script type="text/javascript" src="dist/main.js"></script>
+<script type="text/javascript">
+	var module=(function(){
+		var b=0;
+		function A(){}
+
+		function B(){}
+
+		return {
+			A:A
+		}
+	})();
+	// 使用立即执行函数创建模块
+	// 使用变量myModule表示模块对象
+	var myModule=(function(){
+		var publicName=1;
+		var aaa=2;
+		function getPrivateNum(){}
+		function getaaaa(){}
+		return {
+			getPrivateNum:getPrivateNum,
+			publicName:publicName
+		}
+	})();
+</script>
+</html>

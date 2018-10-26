@@ -3,11 +3,110 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <title>性能</title>
+<script type="text/javascript">
+	//不兼容performance.timing的浏览器，如IE8
+	window.pageStartTime = Date.now() //开始请求时间点
+</script>
+
+<!-- 页面CSS资源 -->
+<link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" type="text/css" href="">
+
+<script type="text/javascript">
+	//白屏时间结束点
+	window.firstPaint = Date.now()
+</script>
 </head>
 <body>
 	<h3>1.性能衡量指标</h3>
 	<div>网页性能衡量指标：开始请求(加载页面的起始时间点performance.timing.navigationStart),<span style="color: #f00;">获取首字节</span>(接收到第一个字节数据的时刻performance.timing.responseStart)，<span style="color: #f00;">页面开始展示</span>(用户屏幕刚开始显示内容的时刻，即白屏时间)，<span style="color: #f00;">首屏内容加载完成</span></div>
 	<h3>2.日期对象</h3>
-	<div></div>
+	<div>
+		<h4>距离除夕还剩 
+			<span id="day">192</span> 天
+			<span id=hours>7</span> 时
+			<span id="minutes">42</span> 分
+			<span id="seconds">16</span> 秒
+		</h4>
+		<p><image src="images/now.png" width="910"></p>		
+	</div>
+	<h3>3.白屏时间</h3>
+	<div>白屏时间 = 页面开始展示的时间点 - 开始请求的时间点（performance.timing.navigationStart）</div>
+	<div>获取页面展示时间点：<image src="images/baiping.png" width="942"></div>
+	<h3>4.首屏时间</h3>
+	<div>首屏时间 = 首屏加载完成的时间点 - 开始请求的时间点<image src="images/shouping.png" width="956"></div>
+	<h3>5.性能优化手段</h3>
+	<div>减少请求文件次数；减少资源体积；提高网络传输</div>
+	<h3>6.减少请求数</h3>
+	<div>1）小图片合并成雪碧图或者使用iconfont；<br>2）JS、CSS文件合并</div>
+	<h3>7.减少资源体积</h3>
+	<div>1）精简代码；<br>
+		2）压缩CSS、JS、图片；（在线工具：clean-css，UglifyJS，imagemin）<br>
+		3）开启Gzip（最高压缩90%；大大减少网络带宽）
+	</div>
+	<h3>8.提高网络传输</h3>
+	<div>1）使用浏览器缓存；<br>
+		2）使用CDN（内容分发网络）
+	</div>
+	<div>
+		&nbsp;&nbsp;CDN(内容分发网络) 是将源站内容分发至最接近用户的节点，使用户可就近取得所需内容，提高用户访问的响应速度和成功率。解决因分布、带宽、服务器性能带来的访问延迟问题，适用于站点加速、点播、直播等场景。<br>
+		&nbsp;&nbsp;合并请求 的主要目的是减少浏览器对服务器发起的请求数，从而减少在发起请求过程中花费的时间。<br>
+		&nbsp;&nbsp;Gzip 是一种压缩技术，可以将资源在服务端进行压缩，然后发送给浏览器后再进行解压，这种方式会降低传输大小，提高网页加载性能。<br>
+		&nbsp;&nbsp;通过工具移除代码中不必要的字符 如所有的注释和空白字符，可以减少代码资源文件体积，提高资源加载速度。
+	</div>
+<script type="text/javascript">
+	var today=new Date(1996, 12, 17, 4, 24, 0)
+	console.log(today)
+	var start=Date.now()
+	console.log(start)
+	function addZero(num){
+		return num<10?'0'+num:num    //小于10前面补0
+	}
+	function dateFormat(date){
+		var date=date?new Date(date):new Date()
+		var str=date.getFullYear()+'-'+addZero(date.getMonth()+1)+'-'+addZero(date.getDate())+' '+addZero(date.getHours())+':'+addZero(date.getMinutes())+':'+addZero(date.getSeconds())
+		return str;
+	}
+	console.log(dateFormat())
+	console.log(dateFormat(1502095046000))
+	console.log(dateFormat('December 3, 1995 03:19:05'))
+
+	var dayText=document.getElementById('day')
+	var hoursText=document.getElementById('hours')
+	var minutesText=document.getElementById('minutes')
+	var secondsText=document.getElementById('seconds')
+	
+	function DJS(){
+		//倒计时
+		var nowTime = Date.now()   //此时的时间毫秒数
+		var confDate = new Date(2019,2,4,18,30,0)   //设定的目标时间
+		confTime = confDate.getTime()   //设定的目标时间毫秒数
+
+		var diffTime = parseInt((confTime-nowTime)/1000) //还差多少秒数
+		if(diffTime>0){
+			var day = parseInt(diffTime/(60*60*24))  //剩余天数
+			var hours = parseInt(diffTime%(60*60*24)/(60*60))  //剩余小时
+			var minutes = parseInt(diffTime%(60*60*24)%(60*60)/60)   //剩余分钟
+			var seconds = parseInt(diffTime%(60*60*24)%(60*60)%60)    //剩余秒数
+			dayText.innerText=day
+			hoursText.innerText=hours
+			minutesText.innerText=minutes
+			secondsText.innerText=seconds
+		}
+	}
+	setInterval("DJS()",1)
+	console.log('白屏时间:'+(firstPaint-performance.timing.navigationStart))
+	const formatSeconds = data =>{
+	  const minute = parseInt(data/60)
+	  const seconds = parseInt(data - 60 * minute)
+	  return [minute, seconds].map(formatNumber).join(':')
+	}
+
+	const formatNumber = n => {
+	  n = n.toString()
+	  return n[1] ? n : '0' + n
+	}
+	console.log(formatSeconds(21.6))
+</script>
 </body>
 </html>

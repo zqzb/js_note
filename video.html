@@ -1,0 +1,488 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>性能</title>
+<script type="text/javascript">
+	//不兼容performance.timing的浏览器，如IE8
+	window.pageStartTime = Date.now() //开始请求时间点
+</script>
+
+<!-- 页面CSS资源 -->
+<link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" type="text/css" href="">
+<style type="text/css">
+	.playVideo{
+  position: relative;
+  width: 100%;
+  height: 370rpx;
+}
+.playVideo video{
+  width: 100%;
+  height: 100%;
+}
+.coverImage{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: none
+}
+</style>
+<script type="text/javascript">
+	//白屏时间结束点
+	window.firstPaint = Date.now()
+</script>
+</head>
+<body>
+	<view class='playVideo'>
+  <video hidden='{{videoShow}}' poster='{{content.imagePathLevel}}' src='{{videoSrc}}' data-index='{{videoIndex}}' id='myVideo'
+   bindplay='play' bindpause='pause' autoplay='{{autoplay}}' bindtimeupdate='witchTime' >
+  <双击查看原图ideo>
+  <cover-image src='/assets/images双击查看原图ideo_bg.png' class='coverImage' mode='scaleToFill' style='display:{{covershow==false?"none":"block"}}'></cover-image>
+  <script type="text/javascript">
+  	  //选择播放
+  selectPlay(e) {
+    const videoId = e.currentTarget.dataset.videoid;
+    const playIndex = e.currentTarget.dataset.index;
+    console.log(e)
+    fetch.videoSrc(Ajax.apiList.videoSrc, this, videoId);
+    this.setData({
+      autoplay: true,
+      playIndex: playIndex,
+      covershow: false
+    })
+  },
+  //播放时间检测
+  witchTime(e) {
+    console.log(e.detail.currentTime)
+    const { playIndex, projectList } = this.data
+    let videoSrc = this.data.videoSrc
+    videoSrc = '';
+    if (e.detail.currentTime > 300 && projectList[playIndex].bought != 1) {
+      this.videoContext.pause()
+
+      this.setData({
+        showTip: false,
+        tiptext: '试播放结束，如需继续播放，请购买视频',
+        videoSrc: videoSrc,
+        autoplay: false,
+        covershow: true
+      })
+    }
+  },
+  //点击播放
+  checkPlayer() {
+    this.videoContext.play
+  },
+
+  // pages/special/special.js
+var fetch = require('../../utils/fetch.js')
+var Ajax = require('../../utils/config.js')
+var app = getApp()
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    totals: 0,
+    showNum: 1,
+    containerid: 0,
+    content: {},
+    projectList: [],
+    videoSrc: '',
+    autoplay: false,
+    playIndex: 0,
+    disable: false,
+    allcoste: 0,
+    buyDisable: true,
+    buyList: [],
+    showTip: true,
+    covershow: false,
+    // tiptext:'该视频未购买，可试播放5分钟'
+    tiptext: '已成功购买此课程\n可在订单详情中查看',
+    allByt: "全部购买"
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    console.log(options)
+    let id = options.id;
+    this.data.containerid = id
+    console.log(id)
+    this.videoContext = wx.createVideoContext('myVideo')
+
+    fetch.contanierDetail(Ajax.apiList.contanierDetail, this, id)
+    fetch.videoList(Ajax.apiList.videoList, this, id, app.globalData)
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+  //视频播放
+  play(e) {
+    const { playIndex, projectList } = this.data
+    console.log(projectList[playIndex].bought != 1)
+    if (projectList[playIndex].bought != 1) {
+      this.setData({
+        showTip: false,
+        tiptext: '该视频未购买，可试播放5分钟'
+      })
+    }
+
+  },
+  // 简介与目录切换
+  switchs(e) {
+    this.setData({
+      showNum: e.currentTarget.dataset.num
+    })
+  },
+  //选择购买
+
+  selectBuy(e) {
+    const index = e.currentTarget.dataset.index;
+    const { projectList, buyList } = this.data;
+    var totals = this.data.totals, buyDisable = this.data.buyDisable, allByt = this.data.allByt;
+
+    if (projectList[index].bought == 2) {
+      projectList[index].bought = 0;
+      console.log(projectList[index].bought)
+      totals -= parseInt(projectList[index].price)
+
+    } else if (projectList[index].bought == 0) {
+
+      projectList[index].bought = 2;
+      console.log(projectList[index].bought)
+      totals += parseInt(projectList[index].price)
+    }
+    if (totals == 0) {
+      buyDisable = true;
+      allByt = "全部购买";
+    } else {
+      buyDisable = false;
+    }
+    this.setData({
+      projectList: projectList,
+      totals: totals,
+      buyDisable: buyDisable,
+      allByt: allByt
+    })
+  },
+  //选择播放
+  selectPlay(e) {
+    const videoId = e.currentTarget.dataset.videoid;
+    const playIndex = e.currentTarget.dataset.index;
+    console.log(e)
+    fetch.videoSrc(Ajax.apiList.videoSrc, this, videoId);
+    this.setData({
+      autoplay: true,
+      playIndex: playIndex,
+      covershow: false
+    })
+  },
+  //播放时间检测
+  witchTime(e) {
+    console.log(e.detail.currentTime)
+    const { playIndex, projectList } = this.data
+    let videoSrc = this.data.videoSrc
+    videoSrc = '';
+    if (e.detail.currentTime > 300 && projectList[playIndex].bought != 1) {
+      this.videoContext.pause()
+
+      this.setData({
+        showTip: false,
+        tiptext: '试播放结束，如需继续播放，请购买视频',
+        videoSrc: videoSrc,
+        autoplay: false,
+        covershow: true
+      })
+    }
+  },
+
+
+//点击播放
+  checkPlayer() {
+    this.videoContext.play
+  },
+  //全部购买
+  allbuy() {
+    this.setData({
+      totals: 0
+    });
+    var totals = this.data.totals;
+    const { projectList } = this.data;
+    if (this.data.allByt == "全部购买") {
+      for (let i = 0; i < projectList.length; i++) {
+        projectList[i].bought = 2;
+        totals += projectList[i].price;
+      }
+      this.setData({
+        projectList: projectList,
+        totals: totals,
+        allByt: "全部取消",
+        buyDisable: false
+      });
+    } else if (this.data.allByt == "全部取消") {
+      for (let i = 0; i < projectList.length; i++) {
+        projectList[i].bought = 0;
+      }
+      this.setData({
+        projectList: projectList,
+        totals: 0,
+        allByt: "全部购买",
+        buyDisable: true
+      })
+    };
+  },
+  //点击立即支付
+  buy() {
+    var that = this;
+    console.log(app.globalData.id)
+    if (!app.globalData.id){
+      that.setData({
+        showTip: false,
+        tiptext: "您未绑定手机号，请绑定"
+      });
+      return
+    }      
+    if (that.data.totals > app.globalData.account){
+        that.setData({
+          showTip: false,
+          tiptext: "您的余额不足，请充值"
+        });
+    }else{
+      console.log(that.data.projectList)
+      let arr = [];
+      for (let i = 0; i < that.data.projectList.length;i++){
+        if (that.data.projectList[i].bought == 2){
+          arr.push(that.data.projectList[i].id)
+        }
+      }
+      let form = {
+        id: app.globalData.id,
+        containerId: that.data.containerid,
+        videoId:arr.join(','),
+        payPrice: parseFloat(that.data.totals)/100,
+        type:1
+      }        
+      app.globalData.order = form
+      wx: wx.navigateTo({
+        url: `/pages/Verification/Verification`,
+      })
+    }
+        
+  },
+  confirmpay: function (res) {
+    let { watchblance } = this.data
+    console.log(watchblance)
+    if (!watchblance) {
+      console.log(this.data.showTip)
+      this.setData({
+        showTip: false
+      })
+    } else {
+      fetch.Buyvideo(Ajax.apiList.wxpay, this.data.price, this)
+    }
+  },
+  //关闭弹窗
+  close() {
+    this.setData({
+      showTip: true,
+    })
+    if (!this.data.covershow && !app.globalData.id){
+      return
+    }
+    if (!app.globalData.id){
+      wx.navigateTo({
+        url: '../information/information'
+      })
+      return
+    }
+    if (this.data.totals > app.globalData.account){
+      wx.navigateTo({
+        url: '../blance/blance'
+      })
+      return
+    }
+   
+  },
+  //视频支付
+function Buyvideo(Url, that, order) {
+  order.payPrice = parseFloat(order.payPrice) * 100
+  wx.request({
+    url: Url,
+    method: 'GET',
+    data: order,
+    success: function(res) {
+      if (res.data.code === '1') {
+        wx: wx.navigateTo({
+          url: `/pages/player/player?id=` + order.containerId,
+        })
+      }
+    }
+  })
+}
+
+function videoContanier(Url, that, types, pageNo, showNum, sort) {
+  //types:容器类型 1 .专题 2 .公开课 3.精品课 4 .操盘体系 pageNo:请求页数 sort:排序
+  let data = {
+    type: types,
+    pageNo: pageNo,
+    sort: sort == 1 ? 'hot' : 'createTime'
+  };
+  wx.showLoading();
+  wx.request({
+    url: Url,
+    data: data,
+    success: function(res) {
+      let {
+        levelList
+      } = that.data
+      for (var i = 0; i < res.data.data.list.length; i++) {
+        res.data.data.list[i].createTime = toDate(res.data.data.list[i].createTime);
+      }
+      levelList = levelList.concat(res.data.data.list);
+       //console.log(showNum)
+      that.setData({
+        showNum: showNum,
+        levelList: levelList,
+        pageNo: res.data.data.pageNum,
+        pages: res.data.data.pages
+      })
+      wx.hideLoading();
+    },
+    fail: function(err) {
+      //  //console.log(err)
+    }
+  })
+}
+
+
+
+//获取视频容器详情
+function contanierDetail(Url, that, Id) {
+  //console.log(Url)
+  wx.request({
+    url: Url,
+    data: {
+      id: Id
+    },
+    success(res) {
+      //console.log(res.data.data)
+      that.setData({
+        content: res.data.data,
+        allcost: res.data.data.price
+      })
+
+    }
+  })
+}
+//视频容器下的视频列表
+function videoList(Url, that, Id, app) {
+  let disable = that.data.disable
+  const {
+    videoId
+  } = that.data
+  //console.log(Url)
+  let data = {
+    containerId: Id,
+    personalId: app.id
+  }
+  if(!app.id){
+    delete data.personalId
+  }
+  wx.request({
+    url: Url,
+    data: data,
+    success(res) {
+      //console.log(res)
+      for (let i = 0; i < res.data.data.length; i++) {
+        //console.log(res.data.data.length)
+        if (res.data.data[i].bought == 1) {
+          disable = true
+        }
+        if (res.data.data[i].createTime) {
+          res.data.data[i].createTime = toDate(res.data.data[i].createTime);
+        }
+      }
+      videoSrc(Ajax.apiList.videoSrc, that, res.data.data[0].videoId)
+      //console.log(res.data.data)
+      that.setData({
+        projectList: res.data.data,
+        disable: disable
+      })
+    }
+  })
+}
+
+//数据请求
+var url = 'https://www.qihan888.cn/app/'
+//var url = 'http://192.168.2.16:8098/app/'
+//数据接口
+module.exports = {
+  userId: 0, //用户Id
+  apiList: {
+    getOpenid: url + 'wx/getOpenid', //微信登入获取openid
+    decoding: url + 'wx/login', //用户信息解密
+    swiper: url + 'pictureCarousel/findAllPictureCarousel', //轮播图
+    hotSpecial: url + 'container/list/main', //热门专题
+    sellWell: url + 'container/list/main', //畅销课程 
+    qualityGoods: url + 'container/list/main', //精品推荐
+    videoContanier: url + 'container/list', //获取视频容器列表
+    purchaseHistory: url + 'wx/pay/list', //消费记录获取
+    wxpay: url + 'wx/wxPay', //微信支付	
+    deletePay: url + 'wx/deletePay', //删除订单
+    myCourse: url + 'wx/pay/trade', //我的课程	
+    contanierDetail: url + 'container/get', //获取视频容器详情
+    videoList: url + 'video/list/container', //视频容器下的视频列表
+    videoSrc: url + 'vod/playInfo', //获取视频的src地址
+
+
+    videoSearch: url + 'search/searchHistory', //视频检索
+    searchHistory: url + 'search/findUserHistory', //检索关键字历史
+    removesearch: url + 'search/delete', //删除历史检索关键字
+
+
+    getuserinfo: url + 'personal/getPersonal', //获取个人信息 
+    adduserinfo: url + 'personal/submitWxPerson',//新增个人信息
+    updataUserinfo:url+"/personal/new_updatePersonalInfo", //修改个人信息
+    sendCode: url + 'code/sendCode', //发送验证码
+    verificationCode: url + 'code/confirmCode', //验证验证码
+    Assessmenttotal: url + 'personal/updateScore', //风险评估总分GET
+    getfadeback: url + 'opinion/add', //小程序后台反馈 
+    getpersonalid: url + 'personal/search', //获取用户id
+    WechartRecharge: url + 'wx/wxPay', //微信充值
+    GetUserInfo: url + 'personal/searchPersonalInfo', //获取用户信息`
+    Lessonpay: url + 'wx/pay/list', //课程支付记录
+    Buyvideo: url + 'pay/doBuy', //购买视频
+    payDetail: url + 'wx/pay/getOrderById', //订单详情
+
+    newsDetail: url + 'economics/list', //资讯详情
+    Hotplate: url + 'share/getHotTrade', //热门板块
+    getshares: url + 'share/getShareByCode', //获取股票信息
+    putbytrade: url + 'share/getShareListByTrade', //获取行业板块所属列表
+    requestFallRise: url + 'share/getPublicShare', //获取最冷和最热股票
+
+    searchShare: url + "stock/searchShare", //搜索股票 
+    getOptionalShare: url + "stock/queryShares", //获取自选股列表
+    historyShare: url + "stock/queryHistory", //获取搜索历史
+    addchoose: url + "stock/chooseShares", //添加自选股
+    addHistory: url + "stock/saveShares", //添加搜索历史
+    clearHistory: url + `stock/clearShares`, //清除历史记录
+    clearChoose: url + `stock/delShares`, //去除自选股 `/stock/checkChosen``
+    checkChoosen: url + `stock/checkChosen`, //判断是否为自选股
+  }
+}
+
+
+
+
+
+  </script>
+</body>
+</html>
