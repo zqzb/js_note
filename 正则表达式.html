@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>正则表达式</title>
+	<style type="text/css">
+		.red{
+			color: #f00;font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>正则基本语法</h1>
+	<div>
+		<p><span class="red">[xyz]</span> 一个字符，匹配任意一个包含的字符</p>
+		<p><span class="red">[^xyz]</span> 一个否定字符集，匹配任何未包含的字符</p>
+
+		<p><span class="red">\w</span> 匹配字母或者数字或者下划线的字符</p>
+		<p><span class="red">\W</span> 匹配不是字母、数字或者下划线的字符</p>
+
+		<p><span class="red">\s</span> 匹配任意空白符</p>
+		<p><span class="red">\S</span> 匹配不是空白符的字符</p>
+
+		<p><span class="red">\d</span> 匹配数字</p>
+		<p><span class="red">\D</span> 匹配非数字的字符</p>
+
+		<p><span class="red">\b</span> 匹配单词开始或者结束的位置</p>
+		<p><span class="red">\B</span> 匹配不是单词开头或者结束的位置</p>
+
+		<p><span class="red">$</span> 匹配字符串的结束</p>
+		<p><span class="red">^</span> 匹配字符串的开始</p>
+
+		<p><span class="red">.</span> 匹配任意字符（除换行符）</p>
+
+		<p><span class="red">*</span> 重复0次或更多次</p>
+		<p><span class="red">+</span> 重复1次或更多次</p>
+		<p><span class="red">?</span> 重复0次或1次</p>
+		<p><span class="red">{n}</span> 重复n次</p>
+		<p><span class="red">{n,}</span> 重复n次或更多次</p>
+		<p><span class="red">{n,m}</span> 重复n次到m次</p>
+		
+	</div>
+<script type="text/javascript">
+	console.log(/^[0-9a-z]{0,10}[@][0-9a-z.-_]{3}$/.test('fdsfs@7fd'))
+	console.log(/^\d[a-z]/.test('4afda'))
+	var reg=/(\w)/igm
+	console.log(reg.exec('efw'))
+	console.log(reg.ignoreCase)  //忽略大小写
+	console.log(reg.global)      //匹配全局
+	console.log(reg.multiline)   //匹配多行
+	console.log('ab\nabababab'.match(/^a/gm))
+	function transform(num){
+		num=(num+'').split('');
+		var temp=[]
+		var count=0
+		for(var len = num.length,i=len-1;i>=0;i--){
+			temp.unshift(num[i]);
+			count+=1;
+			if(count%3 === 0 && i!=0){
+				temp.unshift(',')
+			}
+		}
+		return temp.join('')
+	}
+	console.log(transform('123456789'))
+
+	var a=123456789;
+	var b=(a+'').split('')
+	console.log(b)
+	var temp=[]
+	var count=0
+	for(var i=b.length-1;i>=0;i--){
+		temp.unshift(b[i])
+		count+=1
+		if(count%3===0 && i>0){
+			temp.unshift(',')
+		}
+	}
+	console.log(temp.join(''))
+
+	function transform2(num){
+		num=num+''
+		return num.replace(/(?=(?!\b)(\d{3})+$)/g,',');
+	}
+	console.log(transform2(987654321))
+
+	var url=/^https?:\/\/ke\.q{2}\.com\/.*$/
+	console.log(url.test('https://ke.qq.com/'))
+
+	var telreg=/^1[0-9]{10}$/
+	console.log(telreg.test('15612345679'))
+
+	var ret1=/010101/.exec('20010101')
+	var ret2=/(01){3}/.exec('20010101')   //捕获型分组
+	var ret3=/jero love (coding|girl)/.exec('jero love coding')
+	console.log(ret1,ret2,ret3)
+
+	var ret5=/(jero) love (coding|girl)/.exec('jero love coding') //两个都会捕获
+	console.log(ret5)
+
+	var ret4=/(jero) love (?:coding|girl)/.exec('jero love coding') //非捕获型分组，只捕获前面
+	console.log(ret4)
+
+	console.log(ret4[1],'b',RegExp.$1)  //引用 
+	console.log(ret5[1],'b',RegExp.$2)  //引用 
+
+	var ret6=/<div>.*<\/div>/; //反向引用---> /<div>.*<\/\1>/
+
+	console.log(ret6.test('<div>gfagrer</div>'))
+
+	//过滤年月日
+	// var rDate2=/^[1-9]{4}((0[1-9])|(1[0-1]))[0-3]?[0-9]$/错误写法
+	var rDate=/^\d{4}((?:0|1)?\d)((?:0|1|2|3)?\d)$/;
+
+	console.log(/^\d{4}((0|1)?\d)((0|1|2|3)?\d)$/.test('50130125'))
+	// console.log(rDate2.test('50130201'))
+
+	//贪婪匹配和惰性匹配
+	var s='<span>hello</span><span>world</span>'
+	var reg2=/<span>.+<\/span>/  //贪婪匹配
+	var reg3=/<span>.+?<\/span>/   //惰性匹配
+	console.log(reg2.exec(s))
+	console.log(reg3.exec(s))
+
+	var reg4=/<span>.*?<\/span>/g;
+	var str='<strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span>'
+
+	console.log(str.match(reg4))
+</script>
+</body>
+</html>
