@@ -36,9 +36,9 @@
 		<p><span class="red">?</span> 重复0次或1次</p>
 		<p><span class="red">{n}</span> 重复n次</p>
 		<p><span class="red">{n,}</span> 重复n次或更多次</p>
-		<p><span class="red">{n,m}</span> 重复n次到m次</p>
-		
+		<p><span class="red">{n,m}</span> 重复n次到m次</p>		
 	</div>
+	
 <script type="text/javascript">
 	console.log(/^[0-9a-z]{0,10}[@][0-9a-z.-_]{3}$/.test('fdsfs@7fd'))
 	console.log(/^\d[a-z]/.test('4afda'))
@@ -117,7 +117,7 @@
 	//贪婪匹配和惰性匹配
 	var s='<span>hello</span><span>world</span>'
 	var reg2=/<span>.+<\/span>/  //贪婪匹配
-	var reg3=/<span>.+?<\/span>/   //惰性匹配
+	var reg3=/<span>.+?<\/span>/   //惰性匹配  在修饰数量的匹配符后面加？
 	console.log(reg2.exec(s))
 	console.log(reg3.exec(s))
 
@@ -125,6 +125,36 @@
 	var str='<strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span><strong>coding</span> is <span>interesting</span>'
 
 	console.log(str.match(reg4))
+
+	//正向前瞻和负向前瞻
+	var reg5=/jero(?=\slove\scoding)/g   //一般应该用\s代替空格  正向前瞻表示jero后面是 love coding
+	var reg6=/jero(?!\slove\sgirl)/g   //反向前瞻表示jero后面不是 love girl
+	var target='jero love coding jero love girl jero love coding'
+	console.log(target.match(reg6))
+
+	var target2='a.jpg b.css c.js d.jpg'
+	var reg7=/\w+(?=\.jpg)/g
+	console.log(target2.match(reg7))
+	console.log(reg7.test(target2))
+
+	// String 能使用正则的方法
+	var s='abcd'
+	var s2='ABcd'
+	s=s2.replace(/ab/i,'12')
+	console.log(s)
+
+	var s2='a b c d'
+	var ss=s2.split('/\s/')
+	console.log(ss)
+
+	console.log('abacbsd'.search(/b(a|s)/))
+
+	//有一段 HTML 字符串，想将里面的非 P 元素都替换成 P 元素，用正则怎么实现呢？
+	var str2='<div id="babalala">paragraph <p>哈哈哈</p><span class="yellow">hello jsonp!</span><strong>呵呵呵pi!</strong></div>';
+	var reg9=/<(\/?)(?!p|\/p).*?>/g
+	console.log(str2.replace(reg9, '<$1p>'))  // 注意这里 $1 的反向引用。
+
+
 </script>
 </body>
 </html>

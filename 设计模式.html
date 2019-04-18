@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>设计模式</title>
+</head>
+<body>
+<h1>1.设计模式</h1>
+<div>
+	<p>a.模式是已经验证过的方案</p>
+	<p>b.模式需要有一个富有表达力的名称来更好的表达</p>
+	<p>c.模式应该是一种容易被复用且可用的解决方案</p>
+</div>
+<h1>2.反模式</h1>
+<div>
+	<p>反模式是一种针对某个特定问题的不良解决方法，该方案会导致糟糕的情况发生</p>
+	<p>a.向setTimeout传递字符串会导致内部触发eval()的使用。eval()方法会造成性能问题和可能引起安全性的问题</p>
+	<p>b.修改Object类的原型，即行为相当于，用其他非标准的方法将内置的标准的类型系统搞乱</p>
+	<p>c.定义大量全局变量，会导致出现污染全局命名空间的情况</p>
+	<p>d.使用document.write来创建接口，是会导致重写我们的页面，而不是增量增加</p>
+</div>
+<h1>3.单例模式</h1>
+<div>
+	 <p>单例模式需要满足以下两个条件：a.保证一个类只创建一个实例；b.提供对该实例的全局访问点</p>
+	 <p>比如适合使用单例模式的有：网站的登录框、网站的计时器、应用程序中可全局访问的配置对象</p>
+</div>
+
+<script type="text/javascript">
+	// 适配器模式
+	var oldData=[
+		'andy',       //名称
+		'man',        //性别
+		'engineer',   //职业
+		'1992-10-21'  //出生日期
+	];
+	var newData=({
+		username:oldData[0],
+		sex:oldData[1],
+		zhiye:oldData[2],
+		date:oldData[3]
+	})
+	function arrToObjAdapter(oldData){
+		
+	}
+	function formatNumber(n){
+	  n = n.toString()
+	  return n[1] ? n : '0' + n
+	}
+	function formattime(creatime){
+		var newdate=new Date().getTime()
+		console.log(newdate)
+		var y1=new Date().getFullYear()
+		var mon1=new Date().getMonth()+1
+		var date1=new Date().getDate()
+		var oldate=new Date(creatime)
+		var y=oldate.getFullYear()
+		var mon=[oldate.getMonth()+1].map(formatNumber)
+		var date=[oldate.getDate()].map(formatNumber)
+		var h=[oldate.getHours()].map(formatNumber)
+		var m=[oldate.getMinutes()].map(formatNumber)
+		var s=[oldate.getSeconds()].map(formatNumber)
+		console.log(h+':'+m+':'+s)
+		var seconds=parseInt((newdate-oldate)/1000)
+		var minutes=parseInt((newdate-oldate)/1000/60)
+		var time=''
+		// 多少秒之前
+		if(seconds<=60){
+			time=seconds+'秒前'
+		}else if(minutes<60){
+			time=minutes+'分钟前'
+		}else if(date==date1){
+			time='今天 '+h+':'+m
+		}else if(date==(date1-1)){
+			time='昨天 '+h+':'+m
+		}else if(y==y1){
+			time=mon+'-'+date
+		}else{
+			time=y+'-'+mon+'-'+date
+		}
+		return time;
+	}
+	console.log(formattime(1543285203712))
+
+
+
+
+</script>
+</body>
+</html>
