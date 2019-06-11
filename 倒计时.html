@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>	</title>
+</head>
+<body>
+<script type="">
+	var etime = '2019-05-01 '+'23:59:59'                        //this.data.etime
+    // 结束时间转化为秒
+    var etime_sec = (new Date(etime).getTime())/1000
+
+    var date = Date.parse(new Date()) / 1000                //开始时间
+    
+    var leftime = etime_sec - date             //距离结束还剩多少秒
+
+    var day = parseInt(leftime / 86400) < 10 ? '0' + parseInt(leftime / 86400) : parseInt(leftime / 86400)
+
+    var hour = parseInt((leftime - day*24*3600) / 3600) < 10 ? '0' + parseInt((leftime - day*24*3600) / 3600) : parseInt((leftime - day*24*3600) / 3600)
+
+    var minute = parseInt((leftime - day*24*3600- hour * 3600) / 60) < 10 ? '0' + parseInt((leftime - day*24*3600- hour * 3600) / 60) : parseInt((leftime - day*24*3600- hour * 3600) / 60)
+
+    var seconds = (leftime % 60 < 10) ? '0' + (leftime % 60) : (leftime % 60)
+
+    console.log('结束时间：'+ etime_sec)
+    console.log('目前时间：'+date)
+    console.log('还剩时间：' + leftime)
+    console.log('剩余天数：' + day)
+    console.log('剩余小时：' + hour)
+    console.log('剩余分钟：' + minute)
+    console.log('剩余秒：' + seconds)
+	
+</script>	
+</body>
+</html>

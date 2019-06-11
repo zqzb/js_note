@@ -54,4 +54,38 @@
 		<p><image width="700" src="images/huancun.png"></p>
 	</div>
 </body>
+<script type="text/javascript">
+	var d='',b=[1,2,3,4,5]
+for(let i=0;i<b.length;i++){	
+	if(i==b.length-1){
+	    d+=b[i]
+	}else{
+		d += b[i]+'^'
+	}
+	console.log(i+':'+d)
+}
+var a={'p1':1,'p2':2,'p3':3,'p4':4,'p5':5,}
+// console.log(a[p1])
+for(let i=1;i<6;i++){
+	var b='p'+i
+	console.log(b)
+	console.log(a.b)
+}
+for(var key in a){
+	console.log(a[key])
+}
+var str = '[{"uname":"王强","day":"2010/06/17"},{"uname":"王海云","day":"2010/06/11"}]';
+var jsonList=eval("("+str+")");
+console.log(jsonList)
+
+for(var i=0;i<jsonList.length;i++){
+
+	for(var key in jsonList[i]){
+
+		console.log("key:"+key+",value:"+jsonList[i][key]);
+
+	}
+
+}
+</script>
 </html>

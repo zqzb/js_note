@@ -9,10 +9,15 @@
 	<p>a.模式是已经验证过的方案</p>
 	<p>b.模式需要有一个富有表达力的名称来更好的表达</p>
 	<p>c.模式应该是一种容易被复用且可用的解决方案</p>
+	<div>
+		设计模式包括单例模式，适配器模式，装饰器模式，观察者模式，MVC模式，MVVM模式
+	</div>
 </div>
+
 <h1>2.反模式</h1>
 <div>
 	<p>反模式是一种针对某个特定问题的不良解决方法，该方案会导致糟糕的情况发生</p>
+	<div>JS中的反模式：定义大量污染全局命令空间的变量；修改Object类的原型，使用document.write创建页面；硬编码；写死功能等。</div>
 	<p>a.向setTimeout传递字符串会导致内部触发eval()的使用。eval()方法会造成性能问题和可能引起安全性的问题</p>
 	<p>b.修改Object类的原型，即行为相当于，用其他非标准的方法将内置的标准的类型系统搞乱</p>
 	<p>c.定义大量全局变量，会导致出现污染全局命名空间的情况</p>
@@ -23,6 +28,7 @@
 	 <p>单例模式需要满足以下两个条件：a.保证一个类只创建一个实例；b.提供对该实例的全局访问点</p>
 	 <p>比如适合使用单例模式的有：网站的登录框、网站的计时器、应用程序中可全局访问的配置对象</p>
 </div>
+
 
 <script type="text/javascript">
 	// 适配器模式
@@ -80,9 +86,30 @@
 	}
 	console.log(formattime(1543285203712))
 
+	function ismobile(tel){
+		var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[89]{1}))+\d{8})$/;
+		if(myreg.test(tel)){
+			return true
+		}
+		return false; 
+	}
+	console.log(ismobile(17746624121))
 
-
-
+	var a=Math.random();
+	console.log(a)
+	if(a<0.5){
+		var b='小于0.5'
+	}else{
+		var b='大于等于0.5'
+	}
+	console.log(b)
+	var alist = [{a:1,b:2},{a:4,b:6}]
+	var blist = [{a:7,b:8}]
+	var clist=alist.concat(blist)
+	console.log(clist)
+	var a=7684
+	var b=(a/1000).toFixed(1)
+	console.log(b)
 </script>
 </body>
 </html>
